@@ -2,8 +2,8 @@ package main
 
 import (
 	"net/http"
-	"webapp/pkg/config"
-	"webapp/pkg/handlers"
+	"webapp/internal/config"
+	"webapp/internal/handlers"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -21,7 +21,11 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/about", handlers.Repo.About)
 	mux.Get("/penthouse", handlers.Repo.Penthouse)
 	mux.Get("/dungeon", handlers.Repo.Dungeon)
+
 	mux.Get("/search-availability", handlers.Repo.Availability)
+	mux.Post("/search-availability", handlers.Repo.PostAvailability)
+	mux.Post("/search-availability-json", handlers.Repo.AvailabilityJSON)
+
 	mux.Get("/contact", handlers.Repo.Contact)
 
 	mux.Get("/make-reservation", handlers.Repo.Reservation)

@@ -5,14 +5,15 @@ import (
 	"log"
 	"net/http"
 	"time"
-	"webapp/pkg/config"
-	"webapp/pkg/handlers"
-	"webapp/pkg/render"
+	"webapp/internal/config"
+	"webapp/internal/handlers"
+	"webapp/internal/render"
 
 	"github.com/alexedwards/scs/v2"
 )
 
 const portNumber = ":8080"
+
 var app config.AppConfig
 var session *scs.SessionManager
 
