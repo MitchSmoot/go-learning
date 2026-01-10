@@ -2,13 +2,15 @@ package render
 
 import (
 	"encoding/gob"
-	"github.com/alexedwards/scs/v2"
-	"webapp/internal/config"
-	"webapp/internal/models"
+	"log"
+	"net/http"
 	"os"
 	"testing"
 	"time"
-	"net/http"
+	"webapp/internal/config"
+	"webapp/internal/models"
+
+	"github.com/alexedwards/scs/v2"
 )
 
 var session *scs.SessionManager
@@ -20,6 +22,12 @@ func TestMain(m *testing.M) {
 
 	// change this to true when in production
 	testApp.InProduction = false
+
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	testApp.InfoLog = infoLog
+
+	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	testApp.ErrorLog = errorLog
 
 	// set up the session
 	session = scs.New()

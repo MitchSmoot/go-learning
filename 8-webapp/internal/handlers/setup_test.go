@@ -3,18 +3,20 @@ package handlers
 import (
 	"encoding/gob"
 	"fmt"
+	"html/template"
+	"log"
+	"net/http"
+	"os"
+	"path/filepath"
+	"time"
+	"webapp/internal/config"
+	"webapp/internal/models"
+	"webapp/internal/render"
+
 	"github.com/alexedwards/scs/v2"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/justinas/nosurf"
-	"webapp/internal/config"
-	"webapp/internal/models"
-	"webapp/internal/render"
-	"html/template"
-	"log"
-	"net/http"
-	"path/filepath"
-	"time"	
 )
 
 var app config.AppConfig
@@ -27,6 +29,12 @@ func getRoutes() http.Handler {
 	gob.Register(models.Reservation{})
 
 	app.InProduction = false
+
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
+
+	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
 
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
@@ -56,7 +64,7 @@ func getRoutes() http.Handler {
 
 	mux.Get("/", Repo.Home)
 	mux.Get("/about", Repo.About)
-	mux.Get("/penthouse", Repo.Penthouse) 
+	mux.Get("/penthouse", Repo.Penthouse)
 	mux.Get("/dungeon", Repo.Dungeon)
 
 	mux.Get("/search-availability", Repo.Availability)
